@@ -20275,6 +20275,9 @@ function withParams(paramsOrClosure, maybeValidator) {
 //
 //
 //
+//
+//
+//
 
 // Import this component
 
@@ -20290,21 +20293,21 @@ function withParams(paramsOrClosure, maybeValidator) {
     data: function data() {
         return {
             benhnhan: {
-                name: '',
-                gender: '',
-                dob: '',
-                address: '',
-                yeu_cau: '',
-                email: '',
-                chuan_benh: '',
-                dieu_tri: '',
-                ky_hieu_rang: '',
-                tong_tien: '',
-                ngay_hen: '',
-                phone: ''
+                name: null,
+                gender: null,
+                dob: null,
+                address: null,
+                yeu_cau: null,
+                email: null,
+                chuan_benh: null,
+                dieu_tri: null,
+                ky_hieu_rang: null,
+                tong_tien: null,
+                ngay_hen: null,
+                phone: null
             },
             config: {
-                format: 'DD-MM-YYYY',
+                format: 'YYYY-MM-DD HH:mm:ss',
                 useCurrent: false
             }
         };
@@ -20324,6 +20327,7 @@ function withParams(paramsOrClosure, maybeValidator) {
             },
             phone: {
                 required: __WEBPACK_IMPORTED_MODULE_2_vuelidate_lib_validators__["required"],
+                numeric: true,
                 minLength: Object(__WEBPACK_IMPORTED_MODULE_2_vuelidate_lib_validators__["minLength"])(10),
                 maxLength: Object(__WEBPACK_IMPORTED_MODULE_2_vuelidate_lib_validators__["maxLength"])(20)
             },
@@ -77397,15 +77401,24 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
+                  class: {
+                    error: _vm.$v.benhnhan.phone.$error,
+                    valid:
+                      _vm.$v.benhnhan.phone.$dirty &&
+                      !_vm.$v.benhnhan.phone.$invalid
+                  },
                   attrs: { type: "text", placeholder: "Nhập số điện thoại..." },
                   domProps: { value: _vm.benhnhan.phone },
                   on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.benhnhan, "phone", $event.target.value)
-                    }
+                    input: [
+                      function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.benhnhan, "phone", $event.target.value)
+                      },
+                      _vm.$v.benhnhan.phone.$touch
+                    ]
                   }
                 })
               ])

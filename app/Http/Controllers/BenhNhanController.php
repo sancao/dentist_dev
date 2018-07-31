@@ -53,6 +53,8 @@ class BenhNhanController extends Controller
 
     public function store(Request $request)
     {
+        // $user = Auth::user();
+        // dd($user);
         $user = $this->user->addBenhNhan(1,$request->all());
         return $user;
     }

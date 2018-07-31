@@ -2,6 +2,7 @@
 namespace App\Repositories;
 use App\Repositories\UserInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 
 class UserRepository implements UserInterface
@@ -31,6 +32,22 @@ class UserRepository implements UserInterface
     }
 
     public function addBenhNhan($company_id=0,$arr){
-        dd($arr);
+        // dd($arr);
+        // $user = User::create($arr);
+        // return $user;
+
+        return User::create([
+            'name' => $arr['name'],
+            'email' => $arr['email'],
+            'password' => Hash::make('sangcao'),
+            'role'=>1,
+            'address'=>$arr['address'],
+            'gender'=>$arr['gender'],
+            'phone'=>$arr['phone'],
+            'email'=>$arr['email'],
+            'dob'=>$arr['dob'],
+            'tong_tien'=>$arr['tong_tien'],
+            'yeu_cau'=>$arr['yeu_cau'],
+        ]);
     }
 }

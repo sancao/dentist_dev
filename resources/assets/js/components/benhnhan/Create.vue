@@ -141,7 +141,10 @@
                         <div class="input-group">
                             <span class="input-group-addon">Điện thoại</span>
                             <input type="text" placeholder="Nhập số điện thoại..." class="form-control"
-                            v-model="benhnhan.phone">
+                            v-model="benhnhan.phone"
+                            v-on:input="$v.benhnhan.phone.$touch"
+                            v-bind:class="{error: $v.benhnhan.phone.$error,
+                            valid: $v.benhnhan.phone.$dirty && !$v.benhnhan.phone.$invalid}">
                         </div>
                     </div>
                     <div class="col-md-5 form-group">
@@ -180,7 +183,7 @@
   
     // Import date picker css
     import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
-    import { required, minLength,maxLength,email,url } from 'vuelidate/lib/validators';
+    import { required, minLength,maxLength,email,url,numeric } from 'vuelidate/lib/validators';
 
     export default {
         components: {
@@ -189,21 +192,21 @@
         data: function () {
             return{
                 benhnhan: {
-                    name: '',
-                    gender:'',
-                    dob:'',
-                    address: '',
-                    yeu_cau: '',
-                    email:'',
-                    chuan_benh:'',
-                    dieu_tri:'',
-                    ky_hieu_rang:'',
-                    tong_tien:'',
-                    ngay_hen:'',
-                    phone:''
+                    name: null,
+                    gender:null,
+                    dob:null,
+                    address: null,
+                    yeu_cau: null,
+                    email:null,
+                    chuan_benh:null,
+                    dieu_tri:null,
+                    ky_hieu_rang:null,
+                    tong_tien:null,
+                    ngay_hen:null,
+                    phone:null
                 },
                 config: {
-                    format: 'DD-MM-YYYY',
+                    format: 'YYYY-MM-DD HH:mm:ss',
                     useCurrent: false,
                 }    
             }
@@ -223,6 +226,7 @@
                 },
                 phone: {
                     required,
+                    numeric:true,
                     minLength: minLength(10),
                     maxLength:maxLength(20)
                 },
