@@ -15,11 +15,14 @@
                         <div class="input-group">
                             <span class="input-group-addon">Họ tên</span>
                             <input type="text" placeholder="Nhập họ tên khách hàng" class="form-control"
-                            v-model="benhnhan.name"
+                            v-model.trim="benhnhan.name"
                             v-on:input="$v.benhnhan.name.$touch"
                             v-bind:class="{'error': $v.benhnhan.name.$error, 
                             'valid': $v.benhnhan.name.$dirty && !$v.benhnhan.name.$invalid}">
                         </div>
+                        <div class="error" v-if="!$v.benhnhan.name.required">Nhập tên bệnh nhân!</div>
+                        <div class="error" v-if="!$v.benhnhan.name.minLength">
+                            Tên ít nhất {{$v.benhnhan.name.$params.minLength.min}} ký tự! </div>
                     </div>
                     <div class="col-md-3 form-group">
                         <div class="input-group">
@@ -35,12 +38,12 @@
                     <div class="col-md-3 form-group">
                         <div class="input-group">
                             <span class="input-group-addon">Giới tính</span>
-                                <select id="inputState" placeholder="Chọn giới tính"
+                                <select id="inputState"
                                  class="form-control" v-model="benhnhan.gender"
                                  v-on:input="$v.benhnhan.gender.$touch"
                                 v-bind:class="{'error': $v.benhnhan.gender.$error, 
                                 'valid': $v.benhnhan.gender.$dirty && !$v.benhnhan.gender.$invalid}">
-                                    <option selected>Giới tính...</option>
+                                    <option value="" disabled selected>Giới tính...</option>
                                     <option value="Nam">Nam</option>
                                     <option value="Nữ">Nữ</option>
                                     <option value="Khác">Khác</option>
@@ -59,11 +62,13 @@
                                 valid: $v.benhnhan.address.$dirty && !$v.benhnhan.address.$invalid}">
                             </textarea>
                         </div>
+                        <div class="error" v-if="!$v.benhnhan.address.minLength">
+                            Địa chỉ ít nhất {{$v.benhnhan.address.$params.minLength.min}} ký tự! </div>
                     </div>
                 </div>
                 
                 <div class="row">
-                    <div class="col-xs-12 form-group">
+                    <div class="col-md-6 form-group">
                         <div class="input-group">
                             <span class="input-group-addon">Yêu cầu</span>
                             <textarea type="text" 
@@ -72,10 +77,7 @@
                                 v-model="benhnhan.yeu_cau"></textarea>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12 form-group">
+                    <div class="col-md-6 form-group">
                         <div class="input-group">
                             <span class="input-group-addon">Chuẩn bệnh</span>
                             <textarea type="text" 
@@ -87,25 +89,30 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-9 form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon">Tiền sử bệnh</span>
-                                <select id="inputState"
-                                 class="form-control">
-                                    <option selected>Chọn tiền sử bênh (nếu có)...</option>
-                                    <option value="Tim mạch">Tim mạch</option>
-                                    <option value="Có thai">Có thai</option>
-                                    <option value="Máu không đông">Máu không đông</option>
-                                    <option value="Phản ứng thuốc">Phản ứng thuốc</option>
-                                    <option value="Tiểu đường">Tiểu đường</option>
-                                    <option value="Huyết áp">Huyết áp</option>
-                                </select>
-                        </div>
+                    <div class="col-md-12 form-group">
+                        <input type="checkbox" id="tim_mach" 
+                        value="tim_mach" v-model="benhnhan.tien_su_benh">
+                        <label for="tim_mach">Tim mạch</label>&nbsp;&nbsp;
+                        <input type="checkbox" id="co_thai" 
+                        value="co_thai" v-model="benhnhan.tien_su_benh">
+                        <label for="co_thai">Có thai</label>&nbsp;&nbsp;
+                        <input type="checkbox" id="mau_khong_dong" 
+                        value="mau_khong_dong" v-model="benhnhan.tien_su_benh">
+                        <label for="mau_khong_dong">Máu không đông</label>&nbsp;&nbsp;
+                        <input type="checkbox" id="phan_ung_thuoc" 
+                        value="phan_ung_thuoc" v-model="benhnhan.tien_su_benh">
+                        <label for="phan_ung_thuoc">Phản ứng thuốc</label>&nbsp;&nbsp;
+                        <input type="checkbox" id="tieu_duong" 
+                        value="tieu_duong" v-model="benhnhan.tien_su_benh">
+                        <label for="tieu_duong">Tiểu đường</label>&nbsp;&nbsp;
+                        <input type="checkbox" id="huyet_ap" 
+                        value="huyet_ap" v-model="benhnhan.tien_su_benh">
+                        <label for="huyet_ap">Huyết áp</label>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-12 form-group">
+                    <div class="col-md-6 form-group">
                         <div class="input-group">
                             <span class="input-group-addon">Điều trị</span>
                             <textarea type="text" 
@@ -114,10 +121,7 @@
                                 v-model="benhnhan.dieu_tri"></textarea>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12 form-group">
+                    <div class="col-md-6 form-group">
                         <div class="input-group">
                             <span class="input-group-addon">Ký hiệu răng</span>
                             <textarea type="text" 
@@ -146,6 +150,8 @@
                             v-bind:class="{error: $v.benhnhan.phone.$error,
                             valid: $v.benhnhan.phone.$dirty && !$v.benhnhan.phone.$invalid}">
                         </div>
+                        <div class="error" v-if="!$v.benhnhan.phone.minLength">
+                            Điện thoại ít nhất {{$v.benhnhan.phone.$params.minLength.min}} số! </div>
                     </div>
                     <div class="col-md-5 form-group">
                         <div class="input-group">
@@ -157,18 +163,15 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-5 form-group">
+                    <div class="col-md-10 form-group">
                         <div class="input-group">
                             <span class="input-group-addon">Tổng tiền</span>
                                 <input type="text" placeholder="Nhập tổng tiền..." class="form-control"
                             v-model="benhnhan.tong_tien">
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12 form-group">
-                        <button class="btn btn-success" :disabled="$v.benhnhan.$error">
+                    <div class="col-md-2 form-group">
+                        <button type="submit" class="btn btn-success" :disabled="$v.benhnhan.$error">
                             <span class="glyphicon glyphicon-save"></span> Save</button>
                     </div>
                 </div>
@@ -203,7 +206,8 @@
                     ky_hieu_rang:null,
                     tong_tien:null,
                     ngay_hen:null,
-                    phone:null
+                    phone:null,
+                    tien_su_benh: []
                 },
                 config: {
                     format: 'YYYY-MM-DD HH:mm:ss',

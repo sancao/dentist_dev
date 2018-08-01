@@ -35,7 +35,6 @@ class UserRepository implements UserInterface
         // dd($arr);
         // $user = User::create($arr);
         // return $user;
-
         return User::create([
             'name' => $arr['name'],
             'email' => $arr['email'],
@@ -48,6 +47,7 @@ class UserRepository implements UserInterface
             'dob'=>$arr['dob'],
             'tong_tien'=>$arr['tong_tien'],
             'yeu_cau'=>$arr['yeu_cau'],
+            'tien_su_benh'=>json_encode($arr['tien_su_benh'])
         ]);
     }
 }

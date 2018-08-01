@@ -15,6 +15,7 @@ input {
 
 .error {
   border-color: red;
+  color: red;
 }
 
 .error:focus {

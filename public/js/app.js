@@ -20278,6 +20278,9 @@ function withParams(paramsOrClosure, maybeValidator) {
 //
 //
 //
+//
+//
+//
 
 // Import this component
 
@@ -20304,7 +20307,8 @@ function withParams(paramsOrClosure, maybeValidator) {
                 ky_hieu_rang: null,
                 tong_tien: null,
                 ngay_hen: null,
-                phone: null
+                phone: null,
+                tien_su_benh: []
             },
             config: {
                 format: 'YYYY-MM-DD HH:mm:ss',
@@ -77054,9 +77058,10 @@ var render = function() {
                   directives: [
                     {
                       name: "model",
-                      rawName: "v-model",
+                      rawName: "v-model.trim",
                       value: _vm.benhnhan.name,
-                      expression: "benhnhan.name"
+                      expression: "benhnhan.name",
+                      modifiers: { trim: true }
                     }
                   ],
                   staticClass: "form-control",
@@ -77077,13 +77082,36 @@ var render = function() {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.benhnhan, "name", $event.target.value)
+                        _vm.$set(
+                          _vm.benhnhan,
+                          "name",
+                          $event.target.value.trim()
+                        )
                       },
                       _vm.$v.benhnhan.name.$touch
-                    ]
+                    ],
+                    blur: function($event) {
+                      _vm.$forceUpdate()
+                    }
                   }
                 })
-              ])
+              ]),
+              _vm._v(" "),
+              !_vm.$v.benhnhan.name.required
+                ? _c("div", { staticClass: "error" }, [
+                    _vm._v("Nhập tên bệnh nhân!")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.$v.benhnhan.name.minLength
+                ? _c("div", { staticClass: "error" }, [
+                    _vm._v(
+                      "\n                        Tên ít nhất " +
+                        _vm._s(_vm.$v.benhnhan.name.$params.minLength.min) +
+                        " ký tự! "
+                    )
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-3 form-group" }, [
@@ -77141,7 +77169,7 @@ var render = function() {
                         _vm.$v.benhnhan.gender.$dirty &&
                         !_vm.$v.benhnhan.gender.$invalid
                     },
-                    attrs: { id: "inputState", placeholder: "Chọn giới tính" },
+                    attrs: { id: "inputState" },
                     on: {
                       input: _vm.$v.benhnhan.gender.$touch,
                       change: function($event) {
@@ -77164,9 +77192,11 @@ var render = function() {
                     }
                   },
                   [
-                    _c("option", { attrs: { selected: "" } }, [
-                      _vm._v("Giới tính...")
-                    ]),
+                    _c(
+                      "option",
+                      { attrs: { value: "", disabled: "", selected: "" } },
+                      [_vm._v("Giới tính...")]
+                    ),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "Nam" } }, [_vm._v("Nam")]),
                     _vm._v(" "),
@@ -77219,12 +77249,22 @@ var render = function() {
                     ]
                   }
                 })
-              ])
+              ]),
+              _vm._v(" "),
+              !_vm.$v.benhnhan.address.minLength
+                ? _c("div", { staticClass: "error" }, [
+                    _vm._v(
+                      "\n                        Địa chỉ ít nhất " +
+                        _vm._s(_vm.$v.benhnhan.address.$params.minLength.min) +
+                        " ký tự! "
+                    )
+                  ])
+                : _vm._e()
             ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-xs-12 form-group" }, [
+            _c("div", { staticClass: "col-md-6 form-group" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c("span", { staticClass: "input-group-addon" }, [
                   _vm._v("Yêu cầu")
@@ -77252,11 +77292,9 @@ var render = function() {
                   }
                 })
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-xs-12 form-group" }, [
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-6 form-group" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c("span", { staticClass: "input-group-addon" }, [
                   _vm._v("Chuẩn bệnh")
@@ -77287,10 +77325,312 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-12 form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.benhnhan.tien_su_benh,
+                    expression: "benhnhan.tien_su_benh"
+                  }
+                ],
+                attrs: { type: "checkbox", id: "tim_mach", value: "tim_mach" },
+                domProps: {
+                  checked: Array.isArray(_vm.benhnhan.tien_su_benh)
+                    ? _vm._i(_vm.benhnhan.tien_su_benh, "tim_mach") > -1
+                    : _vm.benhnhan.tien_su_benh
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.benhnhan.tien_su_benh,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = "tim_mach",
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.benhnhan, "tien_su_benh", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "tim_mach" } }, [_vm._v("Tim mạch")]),
+              _vm._v("  \n                    "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.benhnhan.tien_su_benh,
+                    expression: "benhnhan.tien_su_benh"
+                  }
+                ],
+                attrs: { type: "checkbox", id: "co_thai", value: "co_thai" },
+                domProps: {
+                  checked: Array.isArray(_vm.benhnhan.tien_su_benh)
+                    ? _vm._i(_vm.benhnhan.tien_su_benh, "co_thai") > -1
+                    : _vm.benhnhan.tien_su_benh
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.benhnhan.tien_su_benh,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = "co_thai",
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.benhnhan, "tien_su_benh", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "co_thai" } }, [_vm._v("Có thai")]),
+              _vm._v("  \n                    "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.benhnhan.tien_su_benh,
+                    expression: "benhnhan.tien_su_benh"
+                  }
+                ],
+                attrs: {
+                  type: "checkbox",
+                  id: "mau_khong_dong",
+                  value: "mau_khong_dong"
+                },
+                domProps: {
+                  checked: Array.isArray(_vm.benhnhan.tien_su_benh)
+                    ? _vm._i(_vm.benhnhan.tien_su_benh, "mau_khong_dong") > -1
+                    : _vm.benhnhan.tien_su_benh
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.benhnhan.tien_su_benh,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = "mau_khong_dong",
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.benhnhan, "tien_su_benh", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "mau_khong_dong" } }, [
+                _vm._v("Máu không đông")
+              ]),
+              _vm._v("  \n                    "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.benhnhan.tien_su_benh,
+                    expression: "benhnhan.tien_su_benh"
+                  }
+                ],
+                attrs: {
+                  type: "checkbox",
+                  id: "phan_ung_thuoc",
+                  value: "phan_ung_thuoc"
+                },
+                domProps: {
+                  checked: Array.isArray(_vm.benhnhan.tien_su_benh)
+                    ? _vm._i(_vm.benhnhan.tien_su_benh, "phan_ung_thuoc") > -1
+                    : _vm.benhnhan.tien_su_benh
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.benhnhan.tien_su_benh,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = "phan_ung_thuoc",
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.benhnhan, "tien_su_benh", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "phan_ung_thuoc" } }, [
+                _vm._v("Phản ứng thuốc")
+              ]),
+              _vm._v("  \n                    "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.benhnhan.tien_su_benh,
+                    expression: "benhnhan.tien_su_benh"
+                  }
+                ],
+                attrs: {
+                  type: "checkbox",
+                  id: "tieu_duong",
+                  value: "tieu_duong"
+                },
+                domProps: {
+                  checked: Array.isArray(_vm.benhnhan.tien_su_benh)
+                    ? _vm._i(_vm.benhnhan.tien_su_benh, "tieu_duong") > -1
+                    : _vm.benhnhan.tien_su_benh
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.benhnhan.tien_su_benh,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = "tieu_duong",
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.benhnhan, "tien_su_benh", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "tieu_duong" } }, [
+                _vm._v("Tiểu đường")
+              ]),
+              _vm._v("  \n                    "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.benhnhan.tien_su_benh,
+                    expression: "benhnhan.tien_su_benh"
+                  }
+                ],
+                attrs: { type: "checkbox", id: "huyet_ap", value: "huyet_ap" },
+                domProps: {
+                  checked: Array.isArray(_vm.benhnhan.tien_su_benh)
+                    ? _vm._i(_vm.benhnhan.tien_su_benh, "huyet_ap") > -1
+                    : _vm.benhnhan.tien_su_benh
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.benhnhan.tien_su_benh,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = "huyet_ap",
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.benhnhan,
+                            "tien_su_benh",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.benhnhan, "tien_su_benh", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "huyet_ap" } }, [_vm._v("Huyết áp")])
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-xs-12 form-group" }, [
+            _c("div", { staticClass: "col-md-6 form-group" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c("span", { staticClass: "input-group-addon" }, [
                   _vm._v("Điều trị")
@@ -77321,11 +77661,9 @@ var render = function() {
                   }
                 })
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-xs-12 form-group" }, [
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-6 form-group" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c("span", { staticClass: "input-group-addon" }, [
                   _vm._v("Ký hiệu răng")
@@ -77421,7 +77759,17 @@ var render = function() {
                     ]
                   }
                 })
-              ])
+              ]),
+              _vm._v(" "),
+              !_vm.$v.benhnhan.phone.minLength
+                ? _c("div", { staticClass: "error" }, [
+                    _vm._v(
+                      "\n                        Điện thoại ít nhất " +
+                        _vm._s(_vm.$v.benhnhan.phone.$params.minLength.min) +
+                        " số! "
+                    )
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-5 form-group" }, [
@@ -77459,7 +77807,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-5 form-group" }, [
+            _c("div", { staticClass: "col-md-10 form-group" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c("span", { staticClass: "input-group-addon" }, [
                   _vm._v("Tổng tiền")
@@ -77487,16 +77835,14 @@ var render = function() {
                   }
                 })
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-xs-12 form-group" }, [
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-2 form-group" }, [
               _c(
                 "button",
                 {
                   staticClass: "btn btn-success",
-                  attrs: { disabled: _vm.$v.benhnhan.$error }
+                  attrs: { type: "submit", disabled: _vm.$v.benhnhan.$error }
                 },
                 [
                   _c("span", { staticClass: "glyphicon glyphicon-save" }),
@@ -77510,56 +77856,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-9 form-group" }, [
-        _c("div", { staticClass: "input-group" }, [
-          _c("span", { staticClass: "input-group-addon" }, [
-            _vm._v("Tiền sử bệnh")
-          ]),
-          _vm._v(" "),
-          _c(
-            "select",
-            { staticClass: "form-control", attrs: { id: "inputState" } },
-            [
-              _c("option", { attrs: { selected: "" } }, [
-                _vm._v("Chọn tiền sử bênh (nếu có)...")
-              ]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "Tim mạch" } }, [
-                _vm._v("Tim mạch")
-              ]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "Có thai" } }, [
-                _vm._v("Có thai")
-              ]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "Máu không đông" } }, [
-                _vm._v("Máu không đông")
-              ]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "Phản ứng thuốc" } }, [
-                _vm._v("Phản ứng thuốc")
-              ]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "Tiểu đường" } }, [
-                _vm._v("Tiểu đường")
-              ]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "Huyết áp" } }, [
-                _vm._v("Huyết áp")
-              ])
-            ]
-          )
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 if (false) {

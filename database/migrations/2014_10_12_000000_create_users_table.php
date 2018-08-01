@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->enum('status',['active','suspend','inactive'])->default('inactive');
             $table->string('avatar')->nullable();
             $table->date('dob')->nullable();
+            $table->json('tien_su_benh')->nullable();
             $table->enum('gender',['Nam','Nữ','Khác']);
             $table->string('yeu_cau')->nullable();
             $table->string('chuan_benh')->nullable();
