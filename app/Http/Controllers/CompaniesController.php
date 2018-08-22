@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use JWTAuth;
 use Auth;
+use Cache;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,7 +26,13 @@ class CompaniesController extends Controller
     {
         // $user = Auth::user();
         // dd($user);
-        $companies=$this->company->getCompanies(5,$request['text']);        
+        $companies=$this->company->getCompanies(5,$request['text']); 
+        // $trs_search=$request['text'];
+        // $companies = Cache::remember('companies', 22*60, function() {
+        //     return $this->company->getCompanies(5,$trs_search); 
+        // });
+
+
         $response = [
             'pagination' => [
                 'total' => $companies->total(),
