@@ -39,7 +39,7 @@ import BenhNhanIndex from './components/benhnhan/Index.vue';
 
 
 
-axios.defaults.baseURL = 'http://localhost:8000/api';
+axios.defaults.baseURL = 'http://localhost:80/api';
 const router = new VueRouter({
     routes: [{
         path: '/',
